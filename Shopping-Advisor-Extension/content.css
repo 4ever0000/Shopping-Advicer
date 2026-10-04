@@ -1,0 +1,254 @@
+/* --- Yüksek Çözünürlüklü, Modern ve Ağır Çekim Kanat Çırpan Kelebek --- */
+
+#sa-floating-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 85px;
+  height: 85px;
+  background-color: #000000;
+  
+  /* Daireyi sabit tutar, kenarları keskinleştirir */
+  border-radius: 50%;
+  overflow: hidden; 
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999999;
+  
+  /* Görseldeki gibi yumuşak kırmızı/pembe aura */
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.5), 0 0 35px rgba(255, 105, 180, 0.5);
+  border: 1px solid rgba(255, 105, 180, 0.2);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#sa-floating-btn:hover {
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 0 25px rgba(255, 69, 0, 0.8), 0 0 45px rgba(255, 105, 180, 0.9);
+}
+
+/* 1. Görselin Özü (Maksimum Kalite ve Keskinlik) */
+#sa-nebula-img {
+  /* Daralma anında siyah boşluk kalmaması için optimal boyut */
+  width: 125%;
+  height: 125%;
+  object-fit: cover;
+  pointer-events: none;
+  
+  /* Pikselleri en yüksek kalitede, modern ve keskin render etmek için eklendi */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  
+  /* Kanat çırpma süresi uzatıldı (0.65s -> 2s) ve daha organik hale getirildi */
+  animation: slowFlapWings 2s infinite alternate ease-in-out;
+}
+
+/* --- Animasyon (Ağır, Canlı ve Organik Kelebek Kanatları) --- */
+@keyframes slowFlapWings {
+  0% {
+    /* Kanatlar tam açık, standart parlaklık */
+    transform: scale(1) scaleX(1) rotate(0deg);
+    filter: brightness(1) contrast(1.1);
+  }
+  100% {
+    /* Daralma oranı 0.70'ten 0.85'e çekildi (kalite kaybını önler). Hafif bir dönüş (rotate) ile organik canlılık katıldı. */
+    transform: scale(1.03) scaleX(0.85) rotate(3deg);
+    filter: brightness(1.25) contrast(1.3);
+  }
+}
+
+/* Çat Pəncərəsi */
+#sa-chat-window {
+  position: fixed;
+  bottom: 100px;
+  right: 25px;
+  width: 360px;
+  height: 520px;
+  background-color: #0d1117;
+  color: #c9d1d9;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 2px rgba(138, 43, 226, 0.5);
+  display: none;
+  flex-direction: column;
+  z-index: 999999;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+#sa-chat-header {
+  background: linear-gradient(135deg, #161b22 0%, #21262d 100%);
+  color: #58a6ff;
+  padding: 14px 16px;
+  font-weight: bold;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Header Düymələri Və Aksiya Sahəsi (YENİ MÜASİR ƏLAVƏ) --- */
+.sa-header-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #58a6ff;
+}
+
+.sa-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#sa-clear-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 2px 4px;
+  line-height: 1;
+  border-radius: 4px;
+  opacity: 0.8;
+  transition: all 0.2s ease-in-out;
+}
+
+#sa-clear-btn:hover {
+  opacity: 1;
+  transform: scale(1.15);
+  background: rgba(248, 81, 73, 0.15);
+}
+
+#sa-close-btn {
+  cursor: pointer;
+  font-size: 20px;
+  color: #8b949e;
+  transition: color 0.2s ease-in-out;
+}
+
+#sa-close-btn:hover { color: #f85149; }
+
+#sa-chat-box {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sa-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.sa-user-msg {
+  align-self: flex-end;
+  background: #1f6beb;
+  color: #ffffff;
+  border-bottom-right-radius: 2px;
+}
+
+.sa-bot-msg {
+  align-self: flex-start;
+  background: #161b22;
+  color: #e6edf3;
+  border-bottom-left-radius: 2px;
+  border: 1px solid #30363d;
+  width: 92%;
+}
+
+.sa-card {
+  border-top: 1px solid rgba(138, 43, 226, 0.4);
+  padding-top: 8px;
+  margin-top: 6px;
+}
+
+.sa-card img {
+  width: 100%;
+  max-height: 140px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: #ffffff;
+  padding: 4px;
+}
+
+.sa-card-title { font-weight: bold; font-size: 13px; color: #58a6ff; }
+.sa-card-price { color: #3fb950; font-size: 15px; font-weight: bold; margin: 6px 0; }
+
+.sa-card-link {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  padding: 7px 12px;
+  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+  color: #ffffff !important;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.sa-card-link:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.sa-comments-box {
+  margin-top: 8px;
+  background: #0d1117;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #8b949e;
+  border: 1px dashed #30363d;
+}
+
+.sa-comments-title { font-weight: bold; color: #d2a8ff; margin-bottom: 4px; }
+
+#sa-input-area {
+  display: flex;
+  padding: 12px;
+  background: #161b22;
+  border-top: 1px solid #30363d;
+}
+
+#sa-productInput {
+  flex: 1;
+  padding: 9px 12px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  border-radius: 6px;
+  outline: none;
+  font-size: 12px;
+  transition: border-color 0.2s;
+}
+
+#sa-productInput:focus {
+  border-color: #58a6ff;
+}
+
+#sa-searchBtn {
+  margin-left: 8px;
+  padding: 9px 14px;
+  background: #238636;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+#sa-searchBtn:hover { background: #2ea043; }

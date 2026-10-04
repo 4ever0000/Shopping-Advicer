@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Shopping Advisor",
+  "version": "1.0",
+  "description": "Ən ucuz qiyməti avtomatik tapır və müqayisə edir.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://localhost:8081/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.trendyol.com/*",
+        "*://*.umico.az/*",
+        "*://*.alinino.az/*",
+        "*://*.birmarket.az/*",
+        "*://*.kontakt.az/*",
+        "*://*.irshad.az/*"
+      ],
+      "css": ["content.css"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["images/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

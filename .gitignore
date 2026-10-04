@@ -1,0 +1,19 @@
+# Java & Maven
+target/
+*.class
+*.jar
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Chrome Extension / IDEs
+.vscode/
+.idea/
+*.log
+
+# Docker / OS
+.DS_Store
+Thumbs.db
