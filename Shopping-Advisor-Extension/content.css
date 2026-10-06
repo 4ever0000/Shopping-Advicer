@@ -252,3 +252,373 @@
 }
 
 #sa-searchBtn:hover { background: #2ea043; }
+
+
+/* ===================================================================
+   Drag & Drop (Sürüşdürüb Atma) və Ön Baxış Kartı Stilləri
+   =================================================================== */
+
+/* Şəkli çat pəncərəsinin üzərinə gətirəndə görünən effekt */
+#sa-chat-window.sa-drag-over {
+  border: 2px dashed #8a2be2 !important;
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.6) !important;
+}
+
+/* Sürüşdürülən Məhsulun Ön Baxış Paneli */
+#sa-drop-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #161b22;
+  border-top: 1px solid rgba(138, 43, 226, 0.4);
+  padding: 12px;
+  margin: 0 12px 6px 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  animation: saFadeIn 0.3s ease-in-out;
+}
+
+.sa-preview-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#sa-preview-img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 3px;
+  border: 1px solid #30363d;
+  flex-shrink: 0;
+}
+
+#sa-preview-title {
+  flex: 1;
+  padding: 8px 10px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  border-radius: 6px;
+  outline: none;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+#sa-preview-title:focus {
+  border-color: #58a6ff;
+}
+
+#sa-drop-search-btn {
+  width: 100%;
+  padding: 8px 0;
+  background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+#sa-drop-search-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+@keyframes saFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ===================================================================
+   YENİ: Header Sekmeleri (Tabs) ve Genel Panel Düzenlemeleri
+   =================================================================== */
+
+/* Sekme butonlarının kapladığı alan */
+.sa-header-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.sa-tab-btn {
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sa-tab-btn:hover {
+  color: #c9d1d9;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sa-tab-btn.active {
+  color: #ffffff;
+  background: #1f6beb;
+}
+
+/* Görünüm (View) kapsayıcıları */
+.sa-view-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ===================================================================
+   YENİ: Drag & Drop Kaydetme Formu Güncellemeleri
+   =================================================================== */
+
+.sa-preview-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.sa-category-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#sa-preview-category,
+#sa-preview-new-category {
+  width: 100%;
+  padding: 6px 8px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  border-radius: 6px;
+  font-size: 11px;
+  outline: none;
+}
+
+#sa-preview-category:focus,
+#sa-preview-new-category:focus,
+#sa-preview-note:focus {
+  border-color: #58a6ff;
+}
+
+#sa-preview-note {
+  width: 100%;
+  height: 45px;
+  padding: 6px 8px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  border-radius: 6px;
+  font-size: 11px;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.sa-preview-actions {
+  display: flex;
+  gap: 8px;
+}
+
+#sa-drop-save-btn {
+  flex: 1;
+  padding: 8px 0;
+  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+#sa-drop-save-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* ===================================================================
+   YENİ: Baku Electronics Stilinde 2 Panelli Layout (Sol Sidebar + Sağ Grid)
+   =================================================================== */
+
+#sa-saved-layout {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  background: #0d1117;
+}
+
+/* Sol Tərəf: Kateqoriyalar Sidebar */
+#sa-categories-sidebar {
+  width: 110px;
+  background: #161b22;
+  border-right: 1px solid #30363d;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.sa-sidebar-header {
+  font-size: 11px;
+  font-weight: bold;
+  color: #8b949e;
+  padding: 4px 10px 8px 10px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 6px;
+}
+
+#sa-categories-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sa-cat-item {
+  padding: 8px 10px;
+  font-size: 11px;
+  color: #c9d1d9;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+  word-break: break-word;
+}
+
+.sa-cat-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #58a6ff;
+}
+
+.sa-cat-item.active {
+  background: #21262d;
+  color: #58a6ff;
+  border-left-color: #1f6beb;
+  font-weight: bold;
+}
+
+/* Sağ Tərəf: Məhsul Kartları Şəbəkəsi (Grid) */
+#sa-saved-products-grid {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sa-empty-state {
+  font-size: 12px;
+  color: #8b949e;
+  text-align: center;
+  margin-top: 40px;
+  padding: 0 10px;
+}
+
+/* Sağ Tərəfdəki Məhsul Kartı */
+.sa-saved-card {
+  position: relative;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  transition: border-color 0.2s ease;
+}
+
+.sa-saved-card:hover {
+  border-color: #58a6ff;
+}
+
+.sa-saved-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.sa-saved-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+}
+
+.sa-saved-card-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #e6edf3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 15px;
+}
+
+.sa-saved-card-price {
+  font-size: 12px;
+  font-weight: bold;
+  color: #3fb950;
+}
+
+.sa-saved-card-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: rgba(138, 43, 226, 0.2);
+  color: #d2a8ff;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(138, 43, 226, 0.4);
+}
+
+.sa-saved-card-note {
+  font-size: 10px;
+  color: #8b949e;
+  background: #0d1117;
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-top: 2px;
+  border-left: 2px solid #58a6ff;
+  word-break: break-word;
+}
+
+/* Məhsulu Silmə Düyməsi */
+.sa-delete-saved-btn {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px;
+  transition: color 0.2s ease;
+}
+
+.sa-delete-saved-btn:hover {
+  color: #f85149;
+}

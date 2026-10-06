@@ -53,6 +53,14 @@ services:
     restart: always
     ports:
       - "8000:8000"
+    shm_size: "1gb"          # Chromium üçün, yoxsa səhifələr "Aw, Snap" ilə çökə bilər
+    init: true               # qalan Chromium proseslərini (zombie) təmizləyir
+    environment:
+      - SCRAPER_HEADFUL=1              # Xvfb ilə headful rejim
+      - SCRAPER_PLATFORM_TIMEOUT=28    # hər platforma üçün saniyə
+      - SCRAPER_BLOCK_COOLDOWN=0       # sınaq zamanı 0 qoy, işləyəndən sonra 300 et
+    volumes:
+      - ./Python-Service/debug:/app/debug   # boş nəticədə screenshot və HTML buraya düşür
     networks:
       - shopping_net
 

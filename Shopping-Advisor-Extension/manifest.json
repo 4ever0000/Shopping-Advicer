@@ -18,7 +18,8 @@
         "*://*.alinino.az/*",
         "*://*.birmarket.az/*",
         "*://*.kontakt.az/*",
-        "*://*.irshad.az/*"
+        "*://*.irshad.az/*",
+       "*://*.amazon.com/*" 
       ],
       "css": ["content.css"],
       "js": ["content.js"]

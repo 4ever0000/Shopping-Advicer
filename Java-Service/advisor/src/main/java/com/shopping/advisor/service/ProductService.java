@@ -25,7 +25,9 @@ public class ProductService {
     private final CompetitorPriceRepository competitorPriceRepository;
     private final CurrencyService currencyService;
 
-    @Cacheable(value = "products", key = "#requestDto.productName")
+    @Cacheable(value = "products",
+           key = "#requestDto.productName + '|' + #requestDto.currentUrl",
+           unless = "#result == null || #result.competitorPrices() == null || #result.competitorPrices().isEmpty()")
     @Transactional
     public ProductResponseDto searchAndSaveProduct(ProductRequestDto requestDto) {
         if (requestDto == null || requestDto.getProductName() == null) {
