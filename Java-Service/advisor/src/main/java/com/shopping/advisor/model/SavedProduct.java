@@ -20,19 +20,19 @@ public class SavedProduct {
     private String customTitle; // İstifadəçinin verdiyi/redaktə etdiyi ad
 
     @Column(columnDefinition = "TEXT")
-    private String imageUrl;    // Şəklin URL-i
+    private String imageUrl; // Şəklin URL-i
 
     @Column(columnDefinition = "TEXT")
-    private String sourceUrl;   // Məhsulun orijinal səhifə linki
+    private String sourceUrl; // Məhsulun orijinal səhifə linki
 
-    private BigDecimal price;   // O anki qiyməti
+    private BigDecimal price; // O anki qiyməti
 
     @Column(columnDefinition = "TEXT")
-    private String note;        // "Niyə almaq istəyirəm?" qeydi
+    private String note; // "Niyə almaq istəyirəm?" qeydi
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
-    private Category category;  // Aid olduğu kateqoriya
+    private Category category; // Aid olduğu kateqoriya
 
     private LocalDateTime createdAt;
 
@@ -40,4 +40,8 @@ public class SavedProduct {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

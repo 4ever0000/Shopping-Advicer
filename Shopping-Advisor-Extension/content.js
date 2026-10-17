@@ -154,9 +154,7 @@
     chatWindow.style.display = chatWindow.style.display === "flex" ? "none" : "flex";
   });
 
-  // ===================================================================
-  // 2. Çat Pəncərəsinin Yaradılması
-  // ===================================================================
+  // 2. Çat Pəncərəsinin Yaradılması (Auth Və UI Goşulan Toly Kod)
   const chatWindow = document.createElement("div");
   chatWindow.id = "sa-chat-window";
   chatWindow.innerHTML = `
@@ -166,13 +164,43 @@
         <button id="sa-tab-saved" class="sa-tab-btn">🔖 Yadda Saxlanılanlar</button>
       </div>
       <div class="sa-header-actions">
-        <button id="sa-clear-btn" title="Tarixçəni Təmizlə">🗑️</button>
+        <button id="sa-logout-btn" title="Çıxış Yap" style="display: none; background: transparent; border: none; cursor: pointer; font-size: 16px;">🚪</button>
+        <button id="sa-clear-btn" title="Tarixçəni Təmizlə">
+          <span class="sa-trash-icon">🗑️</span>
+        </button>
         <button id="sa-close-btn" title="Bağla">&times;</button>
       </div>
     </div>
 
-    <!-- 1. Axtarış Bölməsi (Əsas View) -->
-    <div id="sa-search-view" class="sa-view-container">
+    <!-- 0. Auth Bölməsi (Giriş / Qeydiyyat) -->
+    <div id="sa-auth-view" class="sa-view-container">
+      <div class="sa-auth-card">
+        <div class="sa-auth-header">
+          <button id="sa-auth-tab-login" class="sa-auth-tab-btn active">Giriş Yap</button>
+          <button id="sa-auth-tab-register" class="sa-auth-tab-btn">Qeydiyyat</button>
+        </div>
+
+        <!-- Login Formu -->
+        <form id="sa-login-form" class="sa-auth-form">
+          <input type="email" id="sa-login-email" placeholder="E-poçt ünvanı..." required />
+          <input type="password" id="sa-login-password" placeholder="Şifrə..." required />
+          <button type="submit" class="sa-auth-submit-btn">Giriş Et</button>
+        </form>
+
+        <!-- Register Formu -->
+        <form id="sa-register-form" class="sa-auth-form" style="display: none;">
+          <input type="text" id="sa-reg-fullname" placeholder="Ad Soyad..." required />
+          <input type="email" id="sa-reg-email" placeholder="E-poçt ünvanı..." required />
+          <input type="password" id="sa-reg-password" placeholder="Şifrə..." required />
+          <button type="submit" class="sa-auth-submit-btn">Qeydiyyatdan Keç</button>
+        </form>
+
+        <div id="sa-auth-error" class="sa-auth-error-msg" style="display: none;"></div>
+      </div>
+    </div>
+
+    <!-- 1. Axtarış Bölməsi -->
+    <div id="sa-search-view" class="sa-view-container" style="display: none;">
       <div id="sa-chat-box"></div>
       
       <!-- Sürüşdürülən Məhsulun Ön Baxış / Qeydiyyat Sahəsi -->
@@ -188,9 +216,10 @@
             <textarea id="sa-preview-note" placeholder="Niyə almaq istəyirsiniz? (Qeyd tutun...)"></textarea>
           </div>
         </div>
+        <!-- Düymələr Yan-yana Bərabər Ölçüdə -->
         <div class="sa-preview-actions">
-          <button id="sa-drop-search-btn">🔍 Axtar</button>
-          <button id="sa-drop-save-btn">💾 Yadda Saxla</button>
+          <button id="sa-drop-search-btn" class="sa-action-btn sa-btn-search">🔍 Axtar</button>
+          <button id="sa-drop-save-btn" class="sa-action-btn sa-btn-save">💾 Yadda Saxla</button>
         </div>
       </div>
 
@@ -214,8 +243,148 @@
         </div>
       </div>
     </div>
+    <!-- Ölçünü Dəyişdirmə Tutacağı (Resize Handle) -->
+    <div id="sa-resize-handle"></div>
   `;
   document.body.appendChild(chatWindow);
+
+
+  // --- Auth Element Referansları ---
+  const authView = document.getElementById("sa-auth-view");
+  const authTabLogin = document.getElementById("sa-auth-tab-login");
+  const authTabRegister = document.getElementById("sa-auth-tab-register");
+  const loginForm = document.getElementById("sa-login-form");
+  const registerForm = document.getElementById("sa-register-form");
+  const authError = document.getElementById("sa-auth-error");
+  const logoutBtn = document.getElementById("sa-logout-btn");
+
+  let authToken = null;
+
+  // Tab Keçidləri (Giriş vs Qeydiyyat)
+  authTabLogin.addEventListener("click", () => {
+    authTabLogin.classList.add("active");
+    authTabRegister.classList.remove("active");
+    loginForm.style.display = "flex";
+    registerForm.style.display = "none";
+    authError.style.display = "none";
+  });
+
+  authTabRegister.addEventListener("click", () => {
+    authTabRegister.classList.add("active");
+    authTabLogin.classList.remove("active");
+    registerForm.style.display = "flex";
+    loginForm.style.display = "none";
+    authError.style.display = "none";
+  });
+
+  // Token Yoxlanışı Və Arayüzün Açılması
+ // Token Yoxlanışı Və Arayüzün Açılması
+  function checkAuthAndInit() {
+    chrome.storage.local.get(["sa_user_token"], (result) => {
+      if (result.sa_user_token) {
+        authToken = result.sa_user_token;
+        authView.style.display = "none";
+        searchView.style.display = "flex";
+        savedView.style.display = "none";
+        
+        // Tab düğmelerini görünür yap
+        document.querySelector(".sa-header-tabs").style.display = "flex";
+        logoutBtn.style.display = "inline-block";
+        clearBtn.style.display = "flex";
+      } else {
+        authView.style.display = "flex";
+        searchView.style.display = "none";
+        savedView.style.display = "none";
+        
+        // Giriş yapılmamışsa tabları ve temizleme butonunu gizle
+        document.querySelector(".sa-header-tabs").style.display = "none";
+        logoutBtn.style.display = "none";
+        clearBtn.style.display = "none";
+      }
+    });
+  }
+
+  // Giriş (Login) Sorğusu
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    authError.style.display = "none";
+
+    const email = document.getElementById("sa-login-email").value.trim();
+    const password = document.getElementById("sa-login-password").value.trim();
+
+    try {
+      const res = await fetch("http://localhost:8081/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "E-poçt və ya şifrə yanlışdır!");
+
+      chrome.storage.local.set({ sa_user_token: data.token }, () => {
+        checkAuthAndInit();
+      });
+    } catch (err) {
+      authError.textContent = err.message;
+      authError.style.display = "block";
+    }
+  });
+
+  // Qeydiyyat (Register) Sorğusu
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    authError.style.display = "none";
+
+    const fullName = document.getElementById("sa-reg-fullname").value.trim();
+    const email = document.getElementById("sa-reg-email").value.trim();
+    const password = document.getElementById("sa-reg-password").value.trim();
+
+    try {
+      const res = await fetch("http://localhost:8081/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, email, password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Qeydiyyat zamanı xəta yarandı!");
+
+      chrome.storage.local.set({ sa_user_token: data.token }, () => {
+        checkAuthAndInit();
+      });
+    } catch (err) {
+      authError.textContent = err.message;
+      authError.style.display = "block";
+    }
+  });
+
+
+ // Form alanlarını sıfırlama və tarixçəni təmizləmə funksiyası
+  function resetAuthForms() {
+    loginForm.reset();
+    registerForm.reset();
+    authError.style.display = "none";
+    authError.textContent = "";
+    
+    // Varsayılan olaraq Giriş Yap tabını aktiv et
+    authTabLogin.click();
+  }
+
+  // Çıxış Yap (Logout)
+  logoutBtn.addEventListener("click", () => {
+    if (confirm("Hesabınızdan çıxış etmək istəyirsiniz?")) {
+      // Token və çat tarixçəsini yaddaşdan silirik
+      chrome.storage.local.remove(["sa_user_token", "sa_chat_history"], () => {
+        authToken = null;
+        resetAuthForms(); // Form inputlarını təmizlə
+        showWelcomeMessage(); // Çatı ilkin vəziyyətə gətir
+        checkAuthAndInit(); // Auth ekranına yönləndir
+      });
+    }
+  });
+  // İlk açılışda tokeni yoxla
+  checkAuthAndInit();
 
   const chatBox = document.getElementById("sa-chat-box");
   const productInput = document.getElementById("sa-productInput");
@@ -268,7 +437,9 @@
   // Kateqoriyaları Dropdown-a Yükləmək Funksiyası
   async function loadCategoryOptions() {
     try {
-      const res = await fetch("http://localhost:8081/api/saved-products/categories");
+      const res = await fetch("http://localhost:8081/api/saved-products/categories", {
+        headers: { "Authorization": `Bearer ${authToken}` }
+      });
       const categories = await res.json();
 
       previewCategorySelect.innerHTML = `<option value="">-- Kateqoriya Seçin --</option>`;
@@ -284,7 +455,9 @@
   // Baku Electronics Stilində: Kateqoriya və Məhsulları Yükləyən Funksiya
   async function loadCategoriesAndProducts() {
     try {
-      const resCat = await fetch("http://localhost:8081/api/saved-products/categories");
+      const resCat = await fetch("http://localhost:8081/api/saved-products/categories", {
+        headers: { "Authorization": `Bearer ${authToken}` }
+      });
       const categories = await resCat.json();
 
       categoriesList.innerHTML = `<li class="sa-cat-item ${!currentSelectedCategoryId ? "active" : ""}" data-id="ALL">Bütün Məhsullar</li>`;
@@ -312,14 +485,18 @@
     }
   }
 
-  // Yadda Saxlanılan Məhsulları Sol Kateqoriyaya Uyğun Gətirmək
+  
+ 
+// Yadda Saxlanılan Məhsulları Sol Kateqoriyaya Uyğun Gətirmək
   async function fetchAndDisplaySavedProducts() {
     const url = currentSelectedCategoryId
       ? `http://localhost:8081/api/saved-products/category/${currentSelectedCategoryId}`
       : "http://localhost:8081/api/saved-products";
 
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        headers: { "Authorization": `Bearer ${authToken}` }
+      });
       const products = await res.json();
 
       if (!products || products.length === 0) {
@@ -350,7 +527,10 @@
         btn.addEventListener("click", async (e) => {
           const id = e.target.getAttribute("data-id");
           if (confirm("Bu məhsulu yadda saxlanılanlardan silmək istəyirsiniz?")) {
-            await fetch(`http://localhost:8081/api/saved-products/${id}`, { method: "DELETE" });
+            await fetch(`http://localhost:8081/api/saved-products/${id}`, { 
+              method: "DELETE",
+              headers: { "Authorization": `Bearer ${authToken}` }
+            });
             fetchAndDisplaySavedProducts();
           }
         });
@@ -384,7 +564,10 @@
     try {
       const res = await fetch("http://localhost:8081/api/saved-products", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`
+        },
         body: JSON.stringify(payload),
       });
 
@@ -456,8 +639,12 @@
     chatWindow.style.display = "none";
   });
 
-  // Tarixçəni Təmizləmə Düyməsinin Məntiqi
+  
+ // Tarixçəni Təmizləmə Düyməsinin Animasiyalı Məntiqi
   clearBtn.addEventListener("click", () => {
+    clearBtn.classList.add("sa-trash-shake");
+    setTimeout(() => clearBtn.classList.remove("sa-trash-shake"), 500);
+
     if (confirm("Çat tarixçəsini təmizləmək istədiyinizdən əminsiniz?")) {
       chrome.storage.local.remove("sa_chat_history", () => {
         showWelcomeMessage();
@@ -718,4 +905,39 @@ function getPageProductImage() {
 
   return "";
 }
+
+// ===================================================================
+  // Pəncərə Ölçüsünün Sürüşdürülərək Dəyişdirilməsi (Resize Handle)
+  // ===================================================================
+  const resizeHandle = document.getElementById("sa-resize-handle");
+  let isResizing = false;
+  let lastX = 0, lastY = 0;
+  let startW = 0, startH = 0;
+
+  resizeHandle.addEventListener("mousedown", (e) => {
+    isResizing = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    startW = chatWindow.offsetWidth;
+    startH = chatWindow.offsetHeight;
+    e.preventDefault();
+    e.stopPropagation();
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isResizing) return;
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+
+    // Minimum və Maksimum hündürlük/en məhdudiyyəti
+    const newW = Math.max(320, Math.min(600, startW - dx));
+    const newH = Math.max(400, Math.min(800, startH + dy));
+
+    chatWindow.style.width = newW + "px";
+    chatWindow.style.height = newH + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    isResizing = false;
+  });
 })();

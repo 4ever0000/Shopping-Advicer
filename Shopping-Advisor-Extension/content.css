@@ -59,23 +59,29 @@
   }
 }
 
-/* Çat Pəncərəsi */
+
 #sa-chat-window {
   position: fixed;
   bottom: 100px;
   right: 25px;
-  width: 360px;
-  height: 520px;
-  background-color: #0d1117;
-  color: #c9d1d9;
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 2px rgba(138, 43, 226, 0.5);
+  width: 380px;
+  height: 540px;
+  min-width: 320px;
+  min-height: 400px;
+  max-width: 650px;
+  max-height: 800px;
+  background-color: #1a2232; /* Siyah yerine Modern Slate Mavi */
+  color: #f1f5f9;
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 12px rgba(99, 102, 241, 0.25);
   display: none;
   flex-direction: column;
+  position: fixed;
   z-index: 999999;
   overflow: hidden;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  border: 1px solid rgba(138, 43, 226, 0.3);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  backdrop-filter: blur(10px);
 }
 
 #sa-chat-header {
@@ -110,28 +116,46 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 15px;
-  padding: 2px 4px;
-  line-height: 1;
-  border-radius: 4px;
-  opacity: 0.8;
-  transition: all 0.2s ease-in-out;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #sa-clear-btn:hover {
-  opacity: 1;
-  transform: scale(1.15);
-  background: rgba(248, 81, 73, 0.15);
+  background: rgba(239, 68, 68, 0.18);
+  transform: scale(1.15) rotate(-10deg);
+}
+
+.sa-trash-shake {
+  animation: trashShake 0.4s ease-in-out;
+}
+
+@keyframes trashShake {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  20% { transform: scale(1.2) rotate(-15deg); }
+  40% { transform: scale(1.2) rotate(15deg); }
+  60% { transform: scale(1.1) rotate(-10deg); }
+  80% { transform: scale(1.1) rotate(10deg); }
 }
 
 #sa-close-btn {
   cursor: pointer;
-  font-size: 20px;
-  color: #8b949e;
-  transition: color 0.2s ease-in-out;
+  font-size: 22px;
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  line-height: 1;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
 }
 
-#sa-close-btn:hover { color: #f85149; }
+#sa-close-btn:hover {
+  color: #ef4444;
+  transform: rotate(90deg) scale(1.15);
+}
 
 #sa-chat-box {
   flex: 1;
@@ -432,7 +456,43 @@
 
 .sa-preview-actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  width: 100%;
+}
+
+.sa-action-btn {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sa-btn-search {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+}
+
+.sa-btn-save {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.25);
+}
+
+.sa-action-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.sa-action-btn:active {
+  transform: scale(0.96);
 }
 
 #sa-drop-save-btn {
@@ -461,17 +521,16 @@
   display: flex;
   height: 100%;
   overflow: hidden;
-  background: #0d1117;
+  background: #1a2232; /* Ana Arka Plan Slate Mavi */
 }
 
-/* Sol Tərəf: Kateqoriyalar Sidebar */
 #sa-categories-sidebar {
-  width: 110px;
-  background: #161b22;
-  border-right: 1px solid #30363d;
+  width: 130px;
+  background: #0f172a; /* Derin Lacivert / Koyu Mavi */
+  border-right: 1px solid #1e293b;
   display: flex;
   flex-direction: column;
-  padding: 8px 0;
+  padding: 10px 8px;
   overflow-y: auto;
 }
 
@@ -489,28 +548,33 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .sa-cat-item {
-  padding: 8px 10px;
+  padding: 9px 12px;
   font-size: 11px;
-  color: #c9d1d9;
+  color: #94a3b8;
   cursor: pointer;
-  border-left: 3px solid transparent;
-  transition: all 0.2s ease;
+  border-radius: 12px; /* Kavisli Oval Şekil */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
   word-break: break-word;
 }
-
 .sa-cat-item:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: #58a6ff;
+  background: rgba(255, 255, 255, 0.07);
+  color: #f8fafc;
+  transform: translateX(2px);
 }
 
 .sa-cat-item.active {
-  background: #21262d;
-  color: #58a6ff;
-  border-left-color: #1f6beb;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
   font-weight: bold;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
 }
 
 /* Sağ Tərəf: Məhsul Kartları Şəbəkəsi (Grid) */
@@ -534,18 +598,19 @@
 /* Sağ Tərəfdəki Məhsul Kartı */
 .sa-saved-card {
   position: relative;
-  background: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 8px;
-  padding: 8px;
+  background: #0f172a; /* Derin Koyu Mavi Kartlar */
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 10px;
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .sa-saved-card:hover {
-  border-color: #58a6ff;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
 }
 
 .sa-saved-card img {
@@ -621,4 +686,173 @@
 
 .sa-delete-saved-btn:hover {
   color: #f85149;
+}
+
+/* ===================================================================
+   Ekstra: Özel İnce Scrollbar ve Boyutlandırma Tutacağı
+   =================================================================== */
+#sa-chat-window ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+#sa-chat-window ::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+#sa-chat-window ::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+
+/* Sol Alt Künçdeki Resize Tutacağı */
+#sa-resize-handle {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  cursor: sw-resize;
+  z-index: 1000000;
+  background: linear-gradient(135deg, transparent 50%, #3b82f6 50%);
+  border-bottom-left-radius: 18px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+#sa-resize-handle:hover {
+  opacity: 1;
+}
+
+
+/* ===================================================================
+   Authentication (Giriş & Qeydiyyat) Modern Glassmorphism Stilləri
+   =================================================================== */
+
+#sa-auth-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background: #1a2232; /* Ana panel rengi ile tam kaplama */
+  position: relative;
+  z-index: 10;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sa-auth-card {
+  width: 100%;
+  max-width: 310px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.15);
+  backdrop-filter: blur(12px);
+  animation: saFadeIn 0.35s ease-out;
+}
+
+.sa-auth-header {
+  display: flex;
+  background: #1e293b;
+  padding: 4px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sa-auth-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sa-auth-tab-btn.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.sa-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sa-auth-form input {
+  width: 100%;
+  padding: 11px 14px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  border-radius: 10px;
+  font-size: 12px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.sa-auth-form input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+}
+
+.sa-auth-submit-btn {
+  width: 100%;
+  padding: 11px 0;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 6px;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sa-auth-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
+}
+
+.sa-auth-submit-btn:active {
+  transform: scale(0.98);
+}
+
+.sa-auth-error-msg {
+  color: #f87171;
+  font-size: 11px;
+  margin-top: 12px;
+  text-align: center;
+  background: rgba(239, 68, 68, 0.12);
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  animation: saFadeIn 0.2s ease;
+}
+
+#sa-logout-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: transform 0.2s ease, background 0.2s ease;
+  display: none;
+}
+#sa-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  transform: scale(1.15);
 }

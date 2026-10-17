@@ -19,7 +19,8 @@
         "*://*.birmarket.az/*",
         "*://*.kontakt.az/*",
         "*://*.irshad.az/*",
-       "*://*.amazon.com/*" 
+       "*://*.amazon.com/*",
+       "*://*.ebay.com/*"
       ],
       "css": ["content.css"],
       "js": ["content.js"]
